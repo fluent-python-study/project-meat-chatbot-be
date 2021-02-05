@@ -5,3 +5,4 @@ CREATE TABLE message (
   content     LONGTEXT,
   created_at  TIMESTAMP
 );
+CREATE INDEX idx_message_created_at ON message (created_at);
