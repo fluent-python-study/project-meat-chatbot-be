@@ -6,6 +6,15 @@ jobs:
   add-reviews:
     runs-on: ubuntu-latest
     steps:
-      - uses: kentaro-m/auto-assign-action@v1.2.1
+      - uses: actions/github-script@v3
         with:
-          configuration-path: '.github/auto_assign.yaml'
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const team = ["limguswls", "leeseungeun"]
+            const reviewers = team.filter(user => user != context.payload.sender.login)
+            await github.pulls.requestReviewers({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              reviewers: reviewers
+            })
